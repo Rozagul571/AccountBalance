@@ -1,0 +1,114 @@
+pip install django-allauth
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "admin/css/dashboard.css" %}">
+    <style>
+        /* Header orqa fon rangi */
+        #header {
+            background-color: #008000 !important; /* Yashil */
+        }
+
+        /* Admin panel fon rangi */
+        body {
+            background-color: #0000ff !important; /* Ko'k */
+        }
+
+        /* Django administration sarlavhasi */
+        #site-name {
+            color: yellow !important; /* Sariq */
+        }
+
+        /* User menyusi va logout tugmasi */
+        #user-tools a {
+            color: white !important;
+        }
+
+        /* Recent actions paneli */
+        #recent-actions-module {
+            background-color: #000 !important; /* Qora */
+            color: white !important;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Modullar (Groups, Users, Models) */
+        .module {
+            background-color: #4444ff !important; /* To'q ko'k */
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        /* Modul nomlari (sarlavhalar) */
+        .module h2, .module caption {
+            color: yellow !important;
+        }
+
+        /* Modul linklari */
+        .module a {
+            color: white !important;
+        }
+
+        /* Harakat tugmalari (Add, Change) */
+        .module .addlink {
+            color: lightgreen !important;
+        }
+
+        .module .changelink {
+            color: orange !important;
+        }
+    </style>
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block nav-breadcrumbs %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% translate 'Recent actions' %}</h2>
+        <h3>{% translate 'My actions' %}</h3>
+        {% load log %}
+        {% get_admin_log 10 as admin_log for_user user %}
+        {% if not admin_log %}
+            <p>{% translate 'None available' %}</p>
+        {% else %}
+            <ul class="actionlist">
+            {% for entry in admin_log %}
+                <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                    <span class="visually-hidden">
+                        {% if entry.is_addition %}{% translate 'Added:' %}
+                        {% elif entry.is_change %}{% translate 'Changed:' %}
+                        {% elif entry.is_deletion %}{% translate 'Deleted:' %}{% endif %}
+                    </span>
+                    {% if entry.is_deletion or not entry.get_admin_url %}
+                        {{ entry.object_repr }}
+                    {% else %}
+                        <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                    {% endif %}
+                    <br>
+                    {% if entry.content_type %}
+                        <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+                    {% else %}
+                        <span class="mini quiet">{% translate 'Unknown content' %}</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
