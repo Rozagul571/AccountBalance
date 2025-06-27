@@ -61,7 +61,50 @@ def expenses(request):
         messages.success(request, "Expense added successfully")
         return redirect('home')
 
-
+#
+# class RegisterFormView(View):
+#     template_name = 'app/Register/register.html'
+#
+#     def get(self, request):
+#         return render(request, self.template_name)
+#
+#     def post(self, request):
+#         data = dict(request.POST.items())
+#         del data['csrfmiddlewaretoken']
+#         username = data.get('username')
+#         data['password'] = make_password(data.get('password'))
+#
+#         if not User.objects.filter(username=username).exists():
+#             User.objects.create(**data)
+#         else:
+#             messages.error(request, 'Already username exists!')
+#
+#         return redirect('login')
+#
+#
+# class LoginFormView(View):
+#     template_name = 'app/Register/login.html'
+#
+#     def get(self, request):
+#         return render(request, self.template_name)
+#
+#     def post(self, request):
+#         username = request.POST.get("username")
+#         password = request.POST.get("password")
+#         user = User.objects.filter(username=username).first()
+#
+#         if user and check_password(password, user.password):
+#             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+#             return redirect('home')
+#         else:
+#             messages.error(request, "Username or Password invalid!")
+#             return redirect('login')
+#
+#
+# class LogoutView(View):
+#     def get(self, request):
+#         logout(request)
+#         return redirect('login')
 def register_form_view(request):
     if request.method == "GET":
         return render(request , 'app/Register/register.html')

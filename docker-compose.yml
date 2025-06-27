@@ -1,14 +1,22 @@
-version: "2.33.0"
-
-
 services:
-  django_p28:
-    build: .
-    container_name: account_balance_con
+  pg:
+    image: postgres:alpine
+    container_name: alijahon_pgdb
     restart: always
-    command: sh -c  "python3 manage.py makemigrations && python3 manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    environment:
+      POSTGRES_PASSWORD: 1
     ports:
-      - 8110:8000
+      - "5435:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
 
+  alijahon:
+    build: .
+    image: alijahon:alpine
+    container_name: alijahon
+    restart: always
+    depends_on:
+      - pg
+    command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
 volumes:
-  pgdata:
+  pg_data:
