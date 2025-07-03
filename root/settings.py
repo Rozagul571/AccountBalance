@@ -116,7 +116,7 @@ USE_TZ = True
 
 
 
-STATIC_URL = 'static/'
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -125,8 +125,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+STATIC_URL = 'static/'
+STATIC_ROOT = join(BASE_DIR, 'staticfiles')
 
-STATIC_ROOT = join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -156,7 +157,7 @@ ACCOUNT_SIGNUP_REDIRECT_URL = '/'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_LOGIN_METHODS = ['email']  # to‘g‘ri
+ACCOUNT_LOGIN_METHODS = ['email']
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
 # ACCOUNT_EMAIL_REQUIRED = True
