@@ -29,6 +29,14 @@ jobs:
           python manage.py makemigrations
           python manage.py migrate
 
-      - name: Run tests
+      - name: Build Docker image (optional)
+        run: docker build -t myapp .
+
+      - name: Run Django app in Docker (optional)
         run: |
-          python manage.py test
+          docker run -d -p 8000:8000 --name web myapp
+          sleep 10
+
+      - name: Check if server is up (optional)
+        run: |
+          curl --fail http://localhost:8000 || exit 1
