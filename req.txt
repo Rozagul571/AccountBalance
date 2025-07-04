@@ -8,9 +8,6 @@ django-allauth==65.4.1
 idna==3.10
 pycparser==2.22
 PyJWT==2.10.1
-requests==2.32.3
+requests==2.32.4
 sqlparse==0.5.3
 urllib3==2.3.0
-django-allauth-65.9.0
-requests-2.32.4
-jwt-1.4.0
